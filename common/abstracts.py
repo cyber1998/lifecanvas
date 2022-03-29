@@ -2,10 +2,17 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-# Create your models here.
+class AbstractModel(models.Model):
+    """
+    Common abstract model for each entity
+    """
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        abstract = True
 
 
-class AbstractTimestamp(models.Model):
+class AbstractTimestamp(AbstractModel):
     """
     Model to store created and updated timestamp information
     """
@@ -16,7 +23,7 @@ class AbstractTimestamp(models.Model):
         abstract = True
 
 
-class AbstractCreator(models.Model):
+class AbstractCreator(AbstractModel):
     """
     Model to store information about who created an entity.
     """
@@ -25,11 +32,15 @@ class AbstractCreator(models.Model):
         null=False,
         blank=False,
         on_delete=models.CASCADE,
-        help_text="Creator of this entity"
+        help_text="Creator of this entity",
+        related_name='created_by_user'
     )
+    
+    class Meta:
+        abstract = True
 
 
-class AbstractUpdator(models.Model):
+class AbstractUpdator(AbstractModel):
     """
     Model to store information about who updated an entity.
     """
@@ -38,5 +49,10 @@ class AbstractUpdator(models.Model):
         null=False,
         blank=False,
         on_delete=models.CASCADE,
-        help_text="Updator of this entity"
+        help_text="Updator of this entity",
+        related_name='updated_by_user'
     )
+    
+    class Meta:
+        abstract = True
+    
