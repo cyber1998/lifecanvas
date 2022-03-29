@@ -33,7 +33,7 @@ class AbstractCreator(AbstractModel):
         blank=False,
         on_delete=models.CASCADE,
         help_text="Creator of this entity",
-        related_name='created_by_user'
+        related_name='%(app_label)s_%(class)s_created_by_user'
     )
     
     class Meta:
@@ -50,7 +50,7 @@ class AbstractUpdator(AbstractModel):
         blank=False,
         on_delete=models.CASCADE,
         help_text="Updator of this entity",
-        related_name='updated_by_user'
+        related_name='%(app_label)s_%(class)s_updated_by_user'
     )
     
     class Meta:

@@ -37,7 +37,8 @@ DJANGO_APPS = [
 ]
 PROJECT_APPS = [
     'common',
-    'userprofile'
+    'userprofile',
+    'journal'
 ]
 THIRD_PARTY_APPS = [
     'django_extensions'

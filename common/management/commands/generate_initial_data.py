@@ -19,9 +19,13 @@ class Command(BaseCommand):
                             nargs='?',
                             default=5,
                             help="Number of users to create by default")
+        parser.add_argument('--create_journal',
+                            default=True,
+                            help="Automatically create a journal and chapters for each user")
 
     def handle(self, *args, **options):
         FixtureGenerator(
             base_users=options['number_of_users'],
             create_superuser=options['create_su'],
+            create_journal=options['create_journal']
         )
