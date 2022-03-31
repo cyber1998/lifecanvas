@@ -9,6 +9,7 @@ class Journal(AbstractCreator, AbstractTimestamp, AbstractUpdator):
     """
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    is_public = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'journal'
@@ -45,6 +46,7 @@ class ChapterViews(models.Model):
                                   related_name='%(app_label)s_%(class)s_viewed_by')
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE,
                                 related_name='%(app_label)s_%(class)s_views')
+
     class Meta:
         db_table = 'chapter_view'
         verbose_name = 'Chapter View'
