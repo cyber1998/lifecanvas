@@ -24,3 +24,9 @@ class ChapterModelViewSet(viewsets.ModelViewSet):
     """
     model = Chapter
     serializer_class = ChapterSerializer
+
+    def get_queryset(self):
+        queryset = Chapter.objects.filter(
+            Q(journal__created_by=self.request.user) | Q(journal__is_public=True)
+        ).order_by('number')
+        return queryset
