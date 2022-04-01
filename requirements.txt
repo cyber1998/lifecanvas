@@ -5,6 +5,7 @@ distlib==0.3.4
 Django==4.0.3
 django-extensions==3.1.5
 djangorestframework==3.13.1
+factory-boy==3.2.1
 Faker==13.3.4
 filelock==3.6.0
 pipenv==2022.3.28
