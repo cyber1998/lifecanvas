@@ -1,8 +1,10 @@
+from django.db.models import Q
 from rest_framework import viewsets
+
 # Create your views here.
 from journal.models import Journal, Chapter
 from journal.serializers import JournalSerializer, ChapterSerializer
-from django.db.models import Q
+
 
 class JournalModelViewSet(viewsets.ModelViewSet):
     """
@@ -27,6 +29,7 @@ class ChapterModelViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Chapter.objects.filter(
-            Q(journal__created_by=self.request.user) | Q(journal__is_public=True)
+            Q(journal__created_by=self.request.user) | Q(
+                journal__is_public=True)
         ).order_by('number')
         return queryset
