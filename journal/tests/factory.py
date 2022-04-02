@@ -21,7 +21,7 @@ class ChapterFactory(factory.django.DjangoModelFactory):
 
     title = factory.Faker('sentence')
     description = factory.Faker('text')
-    is_public = False
+    number = factory.Sequence(lambda n: n)
     created_by = factory.SubFactory('common.tests.factory.UserFactory')
     updated_by = factory.SubFactory('common.tests.factory.UserFactory')
     journal = factory.SubFactory('common.tests.factory.UserFactory')
