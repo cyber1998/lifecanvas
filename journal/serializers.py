@@ -18,8 +18,28 @@ class ChapterSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'created_by': {'default': serializers.CurrentUserDefault()},
-            'updated_by': {'default': serializers.CurrentUserDefault()}
+            'updated_by': {'default': serializers.CurrentUserDefault()},
+            'journal': {'required': False}
         }
+
+    def validate(self, data):
+        try:
+            journal = Journal.objects.get(
+                id=self.context['view'].kwargs['journal_id']
+            )
+            data['journal'] = journal
+        except Journal.DoesNotExist:
+            raise serializers.ValidationError(
+                'Journal does not exist.')
+        if data['created_by'] != journal.created_by:
+            raise serializers.ValidationError(
+                'You are not allowed to create a chapter in this journal'
+            )
+        if data['updated_by'] != journal.created_by:
+            raise serializers.ValidationError(
+                'You are not allowed to update a chapter in this journal'
+            )
+        return data
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
