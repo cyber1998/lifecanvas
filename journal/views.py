@@ -29,7 +29,10 @@ class ChapterModelViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Chapter.objects.filter(
-            Q(journal__created_by=self.request.user) | Q(
+            Q(
+                journal__created_by=self.request.user,
+                journal=self.kwargs.get('journal_id')
+            ) | Q(
                 journal__is_public=True)
         ).order_by('number')
         return queryset
