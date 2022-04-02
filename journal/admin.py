@@ -9,4 +9,4 @@ class JournalAdmin(admin.ModelAdmin):
 
 @admin.register(models.Chapter)
 class ChapterAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'number', 'journal')
+    list_display = ('id', 'title', 'number', 'journal', 'created_by')
