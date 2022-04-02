@@ -23,8 +23,14 @@ class ChapterSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, data):
-        data['journal_id'] = self.context['view'].kwargs['journal_id']
-        journal = Journal.objects.get(id=data['journal_id'])
+        try:
+            journal = Journal.objects.get(
+                id=self.context['view'].kwargs['journal_id']
+            )
+            data['journal'] = journal
+        except Journal.DoesNotExist:
+            raise serializers.ValidationError(
+                'Journal does not exist.')
         if data['created_by'] != journal.created_by:
             raise serializers.ValidationError(
                 'You are not allowed to create a chapter in this journal'
