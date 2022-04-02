@@ -80,12 +80,3 @@ class JournalTestCase(APITestCase):
         response = self.client.delete(f'/api/v1/journal/{self.journal.pk}/chapter/1/')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Chapter.objects.count(), 2)
-
-    # def test_chapter_list_with_public_chapters(self):
-    #     ChapterFactory(is_public=True)
-    #     ChapterFactory(is_public=True)
-    #     response = self.client.get('/api/v1/chapter/')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(len(response.data['results']), 5)
-
-
