@@ -3,7 +3,8 @@ from rest_framework import viewsets
 
 # Create your views here.
 from journal.models import Journal, Chapter
-from journal.serializers import JournalSerializer, ChapterSerializer
+from journal.serializers import JournalSerializer, ChapterSerializer, \
+    ChapterViewsSerializer
 
 
 class JournalModelViewSet(viewsets.ModelViewSet):
@@ -36,3 +37,14 @@ class ChapterModelViewSet(viewsets.ModelViewSet):
                 journal__is_public=True)
         ).order_by('number')
         return queryset
+
+
+class ChapterViewsViewSet(viewsets.ModelViewSet):
+    serializer_class = ChapterViewsSerializer
+
+    def get_queryset(self):
+        queryset = Chapter.objects.filter(
+            chapter=self.kwargs.get('chapter_id')
+        )
+        return queryset
+

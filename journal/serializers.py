@@ -54,3 +54,26 @@ class ChapterSerializer(serializers.ModelSerializer):
 
         return data
 
+
+class ChapterViewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChapterViews
+        fields = ['chapter', 'viewed_by']
+        extra_kwargs = {
+            'viewed_by': {'default': serializers.CurrentUserDefault()},
+            'chapter': {'required': False}
+        }
+
+    def validate(self, attrs):
+        journal_id = self.context['view'].kwargs['journal_id']
+        journal = Journal.objects.get(pk=journal_id)
+
+        attrs['chapter_id'] = int(self.context['view'].kwargs['chapter_id'])
+        viewed_by = attrs['viewed_by']
+        if journal.is_public is False\
+                and viewed_by != journal.created_by:
+            raise serializers.ValidationError(
+                'You are not allowed to view this chapter'
+            )
+        return attrs
+

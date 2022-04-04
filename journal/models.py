@@ -63,3 +63,4 @@ class ChapterLikes(models.Model):
         db_table = 'chapter_like'
         verbose_name = 'Chapter Like'
         verbose_name_plural = 'Chapter Likes'
+        unique_together = ('liked_by', 'chapter')
