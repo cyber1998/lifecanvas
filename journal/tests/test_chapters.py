@@ -4,7 +4,7 @@ from journal.models import Chapter
 from journal.tests.factory import ChapterFactory, JournalFactory
 
 
-class JournalTestCase(APITestCase):
+class ChapterTestCase(APITestCase):
 
     def setUp(self):
         self.user = UserFactory()
