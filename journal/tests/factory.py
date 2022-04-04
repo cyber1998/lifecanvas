@@ -24,7 +24,7 @@ class ChapterFactory(factory.django.DjangoModelFactory):
     number = factory.Sequence(lambda n: n)
     created_by = factory.SubFactory('common.tests.factory.UserFactory')
     updated_by = factory.SubFactory('common.tests.factory.UserFactory')
-    journal = factory.SubFactory('common.tests.factory.UserFactory')
+    journal = factory.SubFactory('journal.tests.factory.JournalFactory')
 
 
 class ChapterLikesFactory(factory.django.DjangoModelFactory):
@@ -32,8 +32,8 @@ class ChapterLikesFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = apps.get_model('journal', 'ChapterLikes')
 
-    liked_by = factory.SubFactory('tests.factory.UserFactory')
-    chapter = factory.SubFactory('tests.factory.ChapterFactory')
+    liked_by =factory.SubFactory('common.tests.factory.UserFactory')
+    chapter = factory.SubFactory('journal.tests.factory.ChapterFactory')
 
 
 class ChapterViewsFactory(factory.django.DjangoModelFactory):
@@ -41,5 +41,5 @@ class ChapterViewsFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = apps.get_model('journal', 'ChapterViews')
 
-    viewed_by = factory.SubFactory('tests.factory.UserFactory')
-    chapter = factory.SubFactory('tests.factory.ChapterFactory')
+    viewed_by = factory.SubFactory('common.tests.factory.UserFactory')
+    chapter = factory.SubFactory('journal.tests.factory.ChapterFactory')
