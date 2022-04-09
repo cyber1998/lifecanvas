@@ -1,13 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
 from common.abstracts import (
-    AbstractCreator,
-    AbstractUpdator,
     AbstractTimestamp
 )
 
 
-class UserProfile(AbstractCreator, AbstractUpdator, AbstractTimestamp):
+class UserProfile(AbstractTimestamp):
     user = models.ForeignKey(
         User,
         null=False,
