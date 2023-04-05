@@ -10,3 +10,8 @@ class JournalAdmin(admin.ModelAdmin):
 @admin.register(models.Chapter)
 class ChapterAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'number', 'journal', 'created_by')
+
+
+@admin.register(models.ChapterViews)
+class ChapterAdmin(admin.ModelAdmin):
+    list_display = ('id', 'chapter', 'viewed_by')
