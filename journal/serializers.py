@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from journal.models import Journal, Chapter, ChapterLikes, ChapterViews
+from django.contrib.auth.models import User
 
 
 class JournalSerializer(serializers.ModelSerializer):
@@ -56,6 +57,7 @@ class ChapterSerializer(serializers.ModelSerializer):
 
 
 class ChapterViewsSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = ChapterViews
         fields = ['chapter', 'viewed_by']
@@ -76,4 +78,25 @@ class ChapterViewsSerializer(serializers.ModelSerializer):
                 'You are not allowed to view this chapter'
             )
         return attrs
+    
+class ChapterLikesSerializer(serializers.Serializer):
 
+    chapter = serializers.PrimaryKeyRelatedField(required=False, queryset=Chapter.objects.all())
+    liked_by = serializers.PrimaryKeyRelatedField(required=False, queryset=User.objects.all())
+
+    class Meta:
+        model = ChapterLikes
+
+    def create(self, validated_data):
+        validated_data['chapter_id'] = int(self.context['view'].kwargs['chapter_id'])
+        validated_data['liked_by_id'] = int(self.context['request'].user.pk)
+
+        journal_id = self.context['view'].kwargs['journal_id']
+        journal = Journal.objects.get(pk=journal_id)
+        if journal.is_public is False\
+                and validated_data['liked_by_id'] != journal.created_by.pk:
+            raise serializers.ValidationError(
+                'You are not allowed to view this chapter'
+            )
+        return ChapterLikes.objects.create(**validated_data)
+        
