@@ -32,7 +32,7 @@ class ChapterLikesFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = apps.get_model('journal', 'ChapterLikes')
 
-    liked_by =factory.SubFactory('common.tests.factory.UserFactory')
+    liked_by = factory.SubFactory('common.tests.factory.UserFactory')
     chapter = factory.SubFactory('journal.tests.factory.ChapterFactory')
 
 
