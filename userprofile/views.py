@@ -20,4 +20,9 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """
     model = UserProfile
     serializer_class = UserProfileSerializer
-    queryset = UserProfile.objects.all()
+
+    def get_queryset(self, request):
+        return UserProfile.objects.filter(
+            is_active=True,
+            is_private=True,
+        )
