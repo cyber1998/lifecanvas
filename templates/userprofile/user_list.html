@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>User Profiles</title>
+    <link rel="stylesheet" href="/css/userprofile.css">
+</head>
+
+<body>
+    <div class="container">
+        {% for user in users %}
+        <p>
+            <a> {{user.username}} </a> </br>
+            <a> {{user.first_name}} </a> </br>
+            <a> {{user.last_name}} </a> </br>
+        </p>
+        {% endfor %}
+    </div>
+</body>
+</html>

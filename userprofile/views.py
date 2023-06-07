@@ -26,3 +26,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             is_active=True,
             is_private=True,
         )
+    
+
+# Django template views that use DRF serializers
+def user_list(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return render(request, 'userprofile/user_list.html', {'users': serializer.data})
