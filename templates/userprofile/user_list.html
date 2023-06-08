@@ -6,11 +6,15 @@
 
 <body>
     <div class="container">
-        {% for user in users %}
+        {% for profile in profiles %}
         <p>
-            <a> {{user.username}} </a> </br>
-            <a> {{user.first_name}} </a> </br>
-            <a> {{user.last_name}} </a> </br>
+            <a> Username: {{profile.user.username}} </a> </br>
+            <a> First Name: {{profile.user.first_name}} </a> </br>
+            <a> Last Name: {{profile.user.last_name}} </a> </br>
+            <a> Interests: </a>
+            {% for interest in profile.interests %}
+            <li> {{interest.name}} </li>
+            {% endfor %}
         </p>
         {% endfor %}
     </div>

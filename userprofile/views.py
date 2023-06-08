@@ -11,6 +11,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     model = User
     serializer_class = UserSerializer
+    permission_classes = []
     queryset = User.objects.all()
 
 
@@ -21,15 +22,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     model = UserProfile
     serializer_class = UserProfileSerializer
 
-    def get_queryset(self, request):
+    def get_queryset(self):
         return UserProfile.objects.filter(
             is_active=True,
-            is_private=True,
+            is_private=False,
         )
-    
-
-# Django template views that use DRF serializers
-def user_list(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return render(request, 'userprofile/user_list.html', {'users': serializer.data})

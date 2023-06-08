@@ -17,6 +17,7 @@ class InterestSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     interests = InterestSerializer(many=True)
+
     class Meta:
         model = UserProfile
         fields = '__all__'
