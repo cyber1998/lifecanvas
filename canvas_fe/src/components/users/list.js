@@ -5,7 +5,7 @@ class UserList extends Component {
     render () {
         const users = this.props.users;
         return (
-            <Table dark>
+            <Table>
                 <thead>
                     <tr>
                         <th>First Name</th>
