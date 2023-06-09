@@ -3,7 +3,7 @@ import {Col, Container, Row} from "reactstrap";
 
 import UserList from "./users/list";
 
-import axios from "axios";
+import { axiosInstance } from "../constants";
 
 import { BASE_API_URL } from "../constants";
 
@@ -17,7 +17,7 @@ class Home extends Component {
     }
 
     getUsers = () => {
-        axios.get(BASE_API_URL + "user/").then(res => this.setState({users: res.data.results}));
+        axiosInstance.get(BASE_API_URL + "user/").then(res => this.setState({users: res.data.results}));
     };
 
     resetState = () => {
