@@ -7,7 +7,7 @@
 
 Journals are not just personal diaries, but they can contain ideas, memories, rich experiences and sometimes, confessions. They can either be very personal, or they can be a strong second voice of a person that might change millions of lives.
 
-Lifecanvas is an attempt at evolving the way users write journals, so that the modern age of technology can help preserve these rich treasures of these rich experiences in a safe, trusted environment while allowing the person to use rich tools to improve their journaling experience.
+Lifecanvas is an attempt at evolving the way users write journals, so that the modern age of technology can help preserve these rich experiences in a safe, trusted environment while allowing the person to use rich tools to improve their journaling experience.
 
 
 ## :computer: Tech Stack
