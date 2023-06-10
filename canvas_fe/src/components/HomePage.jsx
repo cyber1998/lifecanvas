@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import UserPage from './users/UserPage';
 import Home from './Home';
+import JournalPage from './journals/JournalPage';
 
 
 class HomePage extends Component {
@@ -59,6 +60,7 @@ class HomePage extends Component {
                 <Routes>
                     <Route path="/users" element={<UserPage/>} />
                     <Route path="/" element={<Home/>} />
+                    <Route path="/journals" element={<JournalPage/>} />
                 </Routes> 
             </Router>
         </>
