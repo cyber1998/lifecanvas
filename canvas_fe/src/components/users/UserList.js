@@ -49,7 +49,6 @@ class UserList extends Component {
                     </tbody>
                 </Table>
                 {isOpen? <UserProfileModal user_id={this.state.user_id} isOpen={isOpen} toggle={this.toggle}/>: null}
-   
             </Fragment>   
         );
     }
