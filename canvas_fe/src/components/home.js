@@ -13,15 +13,11 @@ class Home extends Component {
     };
 
     componentDidMount() {
-        this.resetState();
+        this.getUsers();
     }
 
     getUsers = () => {
         axiosInstance.get(BASE_API_URL + "user/").then(res => this.setState({users: res.data.results}));
-    };
-
-    resetState = () => {
-        this.getUsers();
     };
 
     render() {
@@ -31,7 +27,6 @@ class Home extends Component {
                     <Col>
                         <UserList
                             users={this.state.users}
-                            resetState={this.resetState}
                         />
                     </Col>
                 </Row>
