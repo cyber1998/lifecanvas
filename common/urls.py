@@ -1,6 +1,8 @@
 from django.urls import path, include
+from userprofile import views as userprofile_views
 
 urlpatterns = [
-    path('v1/journal/', include('journal.urls')),
-    path('v1/user/', include('userprofile.urls')),
+    path('journal/', include('journal.urls')),
+    path('user/', include('userprofile.urls')),
+    path('user/<int:user_id>/profile/', userprofile_views.get_user_profile, name='get_user_profile')
 ]
