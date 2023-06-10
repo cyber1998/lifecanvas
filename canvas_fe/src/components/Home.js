@@ -1,36 +1,30 @@
 import React, {Component} from "react";
-import {Col, Container, Row} from "reactstrap";
-
-import UserList from "./users/UserList";
-
-import { axiosInstance } from "../constants";
-
-import { BASE_API_URL } from "../constants";
+// import {Card, CardText} from "reactstrap";
 
 class Home extends Component {
     state = {
-        users: []
     };
 
     componentDidMount() {
-        this.getUsers();
+
     }
 
     getUsers = () => {
-        axiosInstance.get(BASE_API_URL + "user/").then(res => this.setState({users: res.data.results}));
+
     };
 
     render() {
         return (
-            <Container style={{marginTop: "20px"}}>
-                <Row>
-                    <Col>
-                        <UserList
-                            users={this.state.users}
-                        />
-                    </Col>
-                </Row>
-            </Container>
+            <div id="main-container">
+                <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center" id="welcome-element">
+                    <span class="align-middle">
+                        <h2> Welcome to Lifecanvas, Cyber </h2>
+                    </span>
+                    <span class="align-middle">
+                        <p> Start writing your journal here! </p>
+                    </span>
+                </div>
+            </div>
         );
         }
     }

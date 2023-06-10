@@ -11,6 +11,8 @@
     "dotenv": "^16.1.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router": "^6.12.1",
+    "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.1",
     "reactstrap": "^9.1.10",
     "web-vitals": "^2.1.4"
