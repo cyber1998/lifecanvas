@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Table, Button } from "reactstrap";
-import UserProfileModal from "./profileModal";
+import UserProfileModal from "./UserProfileModal";
 
 class UserList extends Component {
 

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import UserProfile from "./profile";
+import UserProfile from "./Profile";
 import { axiosInstance } from "../../constants";
 import { BASE_API_URL } from "../../constants";
 

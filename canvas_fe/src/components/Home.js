@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "reactstrap";
 
-import UserList from "./users/list";
+import UserList from "./users/UserList";
 
 import { axiosInstance } from "../constants";
 
