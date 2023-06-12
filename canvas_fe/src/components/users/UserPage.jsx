@@ -3,8 +3,7 @@ import { Col, Container, Row } from 'reactstrap';
 
 import UserList from './UserList';
 
-import { axiosInstance } from '../../constants';
-import { BASE_API_URL } from '../../constants';
+import { axiosInstance, BASE_API_URL } from '../../constants';
 
 const UserPage = () => {
   const [users, setUsers] = useState([]);

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Row } from 'reactstrap';
 
-import { axiosInstance } from '../../constants';
-import { BASE_API_URL } from '../../constants';
+import { axiosInstance, BASE_API_URL } from '../../constants';
 import ChapterList from '../chapters/ChapterList';
 
 const JournalList = ({ journals }) => {

@@ -3,8 +3,8 @@ import { Col, Container, Row } from 'reactstrap';
 
 import JournalList from './JournalList';
 
-import { axiosInstance } from '../../constants';
-import { BASE_API_URL } from '../../constants';
+import { axiosInstance, BASE_API_URL } from '../../constants';
+
 
 const JournalPage = () => {
   const [journals, setJournals] = useState([]);

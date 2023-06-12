@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import UserProfile from './Profile';
-import { axiosInstance } from '../../constants';
-import { BASE_API_URL } from '../../constants';
+import { axiosInstance, BASE_API_URL } from '../../constants';
 
 const UserProfileModal = ({ isOpen, toggle, user_id }) => {
   const [profile, setProfile] = useState(null);
