@@ -1,40 +1,34 @@
-import React, { Component, Fragment } from "react";
+import React, { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import UserProfile from "./Profile";
-import { axiosInstance } from "../../constants";
-import { BASE_API_URL } from "../../constants";
+import UserProfile from './Profile';
+import { axiosInstance } from '../../constants';
+import { BASE_API_URL } from '../../constants';
 
+const UserProfileModal = ({ isOpen, toggle, user_id }) => {
+  const [profile, setProfile] = useState(null);
 
+  useEffect(() => {
+    getUserProfile(user_id);
+  }, [user_id]);
 
-class UserProfileModal extends Component {
-    state = {
-        profile: null,
-    };
+  const getUserProfile = (user_id) => {
+    axiosInstance
+      .get(BASE_API_URL + `user/${user_id}/profile/`)
+      .then((res) => setProfile(res.data));
+  };
 
-    componentDidMount() {
-        this.getUserProfile(this.props.user_id);
-    }
-
-    getUserProfile = (user_id) => {
-        axiosInstance.get(BASE_API_URL + `user/${user_id}/profile/`).then(res => this.setState({profile: res.data}));
-    };
-
-    render () {
-        const profile = this.state.profile;
-        return (
-            <Fragment>
-                <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
-                    <ModalHeader>
-                        User Profile
-                    </ModalHeader>
-                    <ModalBody>
-                        {profile? <UserProfile profile={this.state.profile} toggle={this.props.toggle}/> : null}
-                    </ModalBody>
-                </Modal>
-            </Fragment>
-            
-        )
-    }
+  return (
+    <>
+      <Modal isOpen={isOpen} toggle={toggle}>
+        <ModalHeader>User Profile</ModalHeader>
+        <ModalBody>
+          {profile ? (
+            <UserProfile profile={profile} toggle={toggle} />
+          ) : null}
+        </ModalBody>
+      </Modal>
+    </>
+  );
 };
 
 export default UserProfileModal;

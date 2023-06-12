@@ -1,37 +1,33 @@
-import React, {Component} from "react";
-import {Col, Container, Row} from "reactstrap";
+import React, { useEffect, useState } from 'react';
+import { Col, Container, Row } from 'reactstrap';
 
-import UserList from "./UserList";
+import UserList from './UserList';
 
-import { axiosInstance } from "../../constants";
-import { BASE_API_URL } from "../../constants";
+import { axiosInstance } from '../../constants';
+import { BASE_API_URL } from '../../constants';
 
-class UserPage extends Component {
-    state = {
-        users: []
-    };
+const UserPage = () => {
+  const [users, setUsers] = useState([]);
 
-    componentDidMount() {
-        this.getUsers();
-    }
+  useEffect(() => {
+    getUsers();
+  }, []);
 
-    getUsers = () => {
-        axiosInstance.get(BASE_API_URL + "user/").then(res => this.setState({users: res.data.results}));
-    };
+  const getUsers = () => {
+    axiosInstance
+      .get(BASE_API_URL + 'user/')
+      .then((res) => setUsers(res.data.results));
+  };
 
-    render() {
-        return (
-            <Container style={{marginTop: "20px"}}>
-                <Row>
-                    <Col>
-                        <UserList
-                            users={this.state.users}
-                        />
-                    </Col>
-                </Row>
-            </Container>
-        );
-        }
-    }
+  return (
+    <Container style={{ marginTop: '20px' }}>
+      <Row>
+        <Col>
+          <UserList users={users} />
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default UserPage;
