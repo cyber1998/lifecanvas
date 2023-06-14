@@ -6,12 +6,15 @@ import Home from './Home';
 import JournalPage from './journals/JournalPage';
 
 
+
 const HomePage = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
+   
+  console.log(props.isLoggedIn)
 
   return (
     <>

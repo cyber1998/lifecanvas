@@ -13,7 +13,7 @@ const LoginPage = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${BASE_URL}login/`, {
+            const response = await fetch(`${BASE_URL}token/`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ const LoginPage = () => {
     };
 
     return (
-      <div>
+      <div className="container">
         <h2>Login</h2>
         {error && <Alert color="danger">{error}</Alert>}
         <Form onSubmit={handleLogin}>
