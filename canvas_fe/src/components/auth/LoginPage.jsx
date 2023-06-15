@@ -27,6 +27,7 @@ const LoginPage = () => {
                 const { access, refresh } = await response.json();
                 localStorage.setItem('token', access);
                 localStorage.setItem('refresh', refresh);
+                window.location.href = '/';
             }
             else {
               const errorData = await response.json();
