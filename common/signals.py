@@ -10,7 +10,10 @@ def create_user_profile(sender, instance, *args, **kwargs):
     """
     Create a UserProfile object when a new User object is created.
     """
-    UserProfile.objects.create(user=instance)
+    try:
+        UserProfile.objects.get(user=instance)
+    except UserProfile.DoesNotExist:
+        UserProfile.objects.create(user=instance)
 
 
 post_save.connect(

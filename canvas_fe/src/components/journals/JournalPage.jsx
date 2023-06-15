@@ -1,37 +1,33 @@
-import React, {Component} from "react";
-import {Col, Container, Row} from "reactstrap";
+import React, { useEffect, useState } from 'react';
+import { Col, Container, Row } from 'reactstrap';
 
-import JournalList from "./JournalList";
+import JournalList from './JournalList';
 
-import { axiosInstance } from "../../constants";
-import { BASE_API_URL } from "../../constants";
+import { axiosInstance, BASE_API_URL } from '../../constants';
 
-class JournalPage extends Component {
-    state = {
-        journals: []
-    };
 
-    componentDidMount() {
-        this.getJournals();
-    }
+const JournalPage = () => {
+  const [journals, setJournals] = useState([]);
 
-    getJournals = () => {
-        axiosInstance.get(BASE_API_URL + "journal/").then(res => this.setState({journals: res.data.results}));
-    };
+  useEffect(() => {
+    getJournals();
+  }, []);
 
-    render() {
-        const journals = this.state.journals;
-        console.log(journals)
-        return (
-            <Container style={{marginTop: "20px"}}>
-                <Row>
-                    <Col>
-                    {journals? <JournalList journals={journals}/> : null}
-                    </Col>
-                </Row>
-            </Container>
-        );
-        }
-    }
+  const getJournals = () => {
+    axiosInstance
+      .get(BASE_API_URL + 'journal/')
+      .then((res) => setJournals(res.data.results));
+  };
+
+  return (
+    <Container style={{ marginTop: '20px' }}>
+      <Row>
+        <Col>
+          {journals.length > 0 && <JournalList journals={journals} />}
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default JournalPage;
