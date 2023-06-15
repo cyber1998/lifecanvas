@@ -16,6 +16,19 @@ const HomePage = (props) => {
     window.location.href = '/';
   };
 
+  // Decode jwt to get the user from the request
+  const getUser = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      const user = JSON.parse(window.atob(base64));
+      return user.first_name;
+    }
+    return null;
+  };
+
+
   const toggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
@@ -46,7 +59,7 @@ const HomePage = (props) => {
       <Router>
         <Routes>
           <Route path="/users" element={<UserPage />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home firstName={getUser()}/>} />
           <Route path="/journals" element={<JournalPage />} />
         </Routes>
       </Router>
