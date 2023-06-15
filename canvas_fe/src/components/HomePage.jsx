@@ -10,11 +10,15 @@ import JournalPage from './journals/JournalPage';
 const HomePage = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const logOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh');
+    window.location.href = '/';
+  };
+
   const toggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
-   
-  console.log(props.isLoggedIn)
 
   return (
     <>
@@ -29,6 +33,11 @@ const HomePage = (props) => {
               </NavItem>
               <NavItem>
                 <NavLink href="/journals">My Journals</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/" onClick={logOut}>
+                  Logout
+                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>
