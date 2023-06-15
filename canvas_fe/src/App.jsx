@@ -5,12 +5,15 @@ import LoginPage from './components/auth/LoginPage';
 const App = () => {
 
   const isLoggedIn = () => {
-    return localStorage.getItem('access_token') == null;
+    if(localStorage.getItem('token')) {
+      return true;
+    }
+  return false;
   };
-  
+
   return (
     <Fragment>
-      {isLoggedIn?<LoginPage/>: <HomePage isLoggedIn={isLoggedIn}/>}
+      {isLoggedIn()?<HomePage/>: <LoginPage /> }
     </Fragment>
   );
 };
