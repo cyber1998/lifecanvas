@@ -1,8 +1,10 @@
+import random
 import faker
 from django.apps import apps
 from django.contrib.auth.models import User
 
 from journal.models import Journal, Chapter
+from userprofile.models import Interest, UserProfile
 from lifecanvas.settings import PROJECT_APPS
 
 
@@ -21,8 +23,10 @@ class FixtureGenerator:
         """
         self.delete_all()
         self.create_su()
+        self.create_interests()
         self.create_users()
         self.create_journals()
+
 
     def create_su(self):
         """
@@ -37,6 +41,15 @@ class FixtureGenerator:
             su.set_password('admin')
             su.save()
             self.admin = su
+
+    def create_interests(self):
+        """
+        Create interests for users.
+        """
+        interests = ["Music", "Sports", "Travel", "Food", "Art", "Photography", "Fashion", "Technology", "Science", "Gaming"]
+        for interest in interests:
+            Interest.objects.create(name=interest)
+        
 
     def create_users(self):
         """
@@ -53,6 +66,13 @@ class FixtureGenerator:
                 is_superuser=False
             )
             user.save()
+            profile = UserProfile.objects.create(
+                user=user,
+                is_private=False
+            )
+            num_of_items = random.randint(1, 10)
+            interests = random.sample(list(Interest.objects.all()), num_of_items)
+            profile.interests.add(*interests)
 
     def create_journals(self):
         """
@@ -66,9 +86,9 @@ class FixtureGenerator:
                     created_by=self.admin,
                     updated_by=self.admin
                 )
-                for i in range(2):
+                for i in range(random.randint(1, 10)):
                     chapter = Chapter.objects.create(
-                        title=f'Chapter {i}',
+                        title=f'{journal.title} : Chapter {i}',
                         body=faker.Faker().text(),
                         number=i,
                         journal=journal,
