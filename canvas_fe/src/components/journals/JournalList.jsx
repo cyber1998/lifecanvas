@@ -15,7 +15,7 @@ const JournalList = ({ journals }) => {
   const getChapters = (journalObj) => {
     setJournal(journalObj);
     axiosInstance
-      .get(BASE_API_URL + `journal/${journal.id}/chapter/`)
+      .get(BASE_API_URL + `journal/${journalObj.id}/chapter/`)
       .then((res) => setChapters(res.data.results));
   };
 
