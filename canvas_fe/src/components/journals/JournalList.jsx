@@ -6,14 +6,16 @@ import ChapterList from '../chapters/ChapterList';
 
 const JournalList = ({ journals }) => {
   const [chapters, setChapters] = useState([]);
+  const [journal, setJournal] = useState('');
 
   useEffect(() => {
     setChapters([]);
   }, []);
 
-  const getChapters = (journalId) => {
+  const getChapters = (journalObj) => {
+    setJournal(journalObj);
     axiosInstance
-      .get(BASE_API_URL + `journal/${journalId}/chapter/`)
+      .get(BASE_API_URL + `journal/${journalObj.id}/chapter/`)
       .then((res) => setChapters(res.data.results));
   };
 
@@ -27,7 +29,7 @@ const JournalList = ({ journals }) => {
       <Row>
         {journals.map((journal) => (
           <Col xs="12" sm="6" md="6" lg="6" xl="6" key={journal.id}>
-            <Card className="mb-3" onClick={() => getChapters(journal.id)}>
+            <Card className="mb-3" onClick={() => getChapters(journal)}>
               <div className="card-body">
                 <h5 className="card-title">{journal.title}</h5>
               </div>
@@ -35,7 +37,16 @@ const JournalList = ({ journals }) => {
           </Col>
         ))}
       </Row>
-      {chapters.length > 0 && <ChapterList chapters={chapters} />}
+      <hr/>
+      <div className="d-flex flex-column min-h-100 justify-content-center align-items-center mb-3">
+        <span className="align-middle">
+          <h4>Chapters for: {journal.title}</h4>
+        </span>
+      </div>
+      <Row>
+        {chapters.length > 0 && <ChapterList chapters={chapters} />}
+      </Row>
+
     </>
   );
 };
