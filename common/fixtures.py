@@ -35,6 +35,8 @@ class FixtureGenerator:
         if self.create_superuser:
             su = User.objects.create(
                 username='admin',
+                first_name="Cyber",
+                last_name="Naskar",
                 is_superuser=True,
                 is_staff=True
             )
@@ -88,8 +90,9 @@ class FixtureGenerator:
                 )
                 for i in range(random.randint(1, 10)):
                     chapter = Chapter.objects.create(
-                        title=f'{journal.title} : Chapter {i}',
-                        body=faker.Faker().text(),
+                        title=f'Chapter {i}',
+                        description=faker.Faker().sentence(nb_words=25),
+                        body=faker.Faker().paragraph(nb_sentences=30, variable_nb_sentences=True),
                         number=i,
                         journal=journal,
                         created_by=self.admin,
