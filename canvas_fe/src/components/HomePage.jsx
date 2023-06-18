@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, Nav, NavItem, NavLink } from 'reactstrap';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import UserPage from './users/UserPage';
+import UserList from './users/UserList';
 import Home from './Home';
 import JournalPage from './journals/JournalPage';
 
@@ -58,7 +58,7 @@ const HomePage = (props) => {
       </div>
       <Router>
         <Routes>
-          <Route path="/users" element={<UserPage />} />
+          <Route path="/users" element={<UserList />} />
           <Route path="/" element={<Home firstName={getUser()}/>} />
           <Route path="/journals" element={<JournalPage />} />
         </Routes>
