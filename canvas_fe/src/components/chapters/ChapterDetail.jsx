@@ -38,7 +38,7 @@ const ChapterDetail = ({ isOpen, toggle, currentChapter, currentJournalId, setCu
                 </div>
             </ModalBody>
             <ModalFooter>
-                <div className="d-flex flex-column min-h-100 justify-content-center align-items-center mb-3">
+                <div className="d-flex min-h-100 w-100 justify-content-between align-items-center mb-3">
                     <span className="align-left">
                         <Button color="primary" onClick={() => getChapter(currentChapter.previous_chapter)} disabled={currentChapter.previous_chapter === null}>
                             Previous
