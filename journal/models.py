@@ -29,6 +29,8 @@ class Chapter(AbstractCreator, AbstractTimestamp, AbstractUpdator):
     description = models.TextField(blank=True, null=True)
     body = models.TextField()
     number = models.IntegerField()
+    previous_chapter = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_previous_chapter')
+    next_chapter = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_next_chapter')
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE,
                                 related_name='%(app_label)s_%(class)s_chapters')
 
