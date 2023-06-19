@@ -28,7 +28,7 @@ const ChapterList = ({ chapters }) => {
           </Card>
         </Col>
       ))}
-      {currentChapter? <ChapterDetail chapter={currentChapter} isOpen={isOpen} toggle={toggle}/>: null}
+      {currentChapter? <ChapterDetail currentChapter={currentChapter} isOpen={isOpen} toggle={toggle}/>: null}
     </>
   );
 };
