@@ -44,7 +44,7 @@ const JournalList = ({ journals }) => {
         </span>
       </div>
       <Row>
-        {chapters.length > 0 && <ChapterList chapters={chapters} />}
+        {chapters.length > 0 && <ChapterList chapters={chapters} currentJournalId={journal.id} />}
       </Row>
 
     </>

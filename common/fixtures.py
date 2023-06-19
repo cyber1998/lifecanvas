@@ -26,6 +26,7 @@ class FixtureGenerator:
         self.create_interests()
         self.create_users()
         self.create_journals()
+        self.map_chapters()
 
 
     def create_su(self):
@@ -52,6 +53,31 @@ class FixtureGenerator:
         for interest in interests:
             Interest.objects.create(name=interest)
         
+    def map_chapters(self):
+        """
+        Map the previous and next chapters
+        """
+        for journal in Journal.objects.all():
+            if Chapter.objects.filter(journal=journal).exists():
+                first_chapter = Chapter.objects.filter(journal=journal).first()
+                last_chapter = Chapter.objects.filter(journal=journal).last()
+                first_chapter.previous_chapter = None
+                last_chapter.next_chapter = None
+                first_chapter.save()
+                last_chapter.save()
+
+                except_first_and_last = Chapter.objects.filter(journal=journal).exclude(id__in=[first_chapter.id, last_chapter.id])                
+                for chapter in except_first_and_last:
+                    prev_chapter = Chapter.objects.get(journal=journal, number=chapter.number-1)
+                    next_chapter = Chapter.objects.get(journal=journal, number=chapter.number+1)
+                    chapter.previous_chapter = prev_chapter
+                    chapter.next_chapter = next_chapter
+                    chapter.save()
+
+                first_chapter.next_chapter = except_first_and_last.first()
+                first_chapter.save()
+                last_chapter.previous_chapter = except_first_and_last.last()
+                last_chapter.save()
 
     def create_users(self):
         """
@@ -94,10 +120,13 @@ class FixtureGenerator:
                         description=faker.Faker().sentence(nb_words=25),
                         body=faker.Faker().paragraph(nb_sentences=30, variable_nb_sentences=True),
                         number=i,
+                        previous_chapter=None,
+                        next_chapter=None,
                         journal=journal,
                         created_by=self.admin,
                         updated_by=self.admin
                     )
+                
 
     def delete_all(self):
         """

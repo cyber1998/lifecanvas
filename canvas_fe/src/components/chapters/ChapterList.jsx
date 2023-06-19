@@ -3,16 +3,16 @@ import { Card, Col } from "reactstrap";
 import { useState } from "react";
 import ChapterDetail from "./ChapterDetail";
 
-const ChapterList = ({ chapters }) => {
+const ChapterList = ({ chapters, currentJournalId }) => {
 
-  const [currentChapter, setcurrentChapter] = useState(null);
+  const [currentChapter, setCurrentChapter] = useState(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
   const openChapterModal = (chapter) => {
-    setcurrentChapter(chapter);
+    setCurrentChapter(chapter);
     toggle();
   };
 
@@ -28,7 +28,15 @@ const ChapterList = ({ chapters }) => {
           </Card>
         </Col>
       ))}
-      {currentChapter? <ChapterDetail chapter={currentChapter} isOpen={isOpen} toggle={toggle}/>: null}
+      {currentChapter ?
+        <ChapterDetail
+          currentChapter={currentChapter}
+          setCurrentChapter={setCurrentChapter}
+          currentJournalId={currentJournalId}
+          isOpen={isOpen}
+          toggle={toggle} 
+        /> : null
+      }
     </>
   );
 };
