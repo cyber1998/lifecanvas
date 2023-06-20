@@ -2,17 +2,23 @@ import { CardTitle, Card, Button, CardText, Badge, List, ListInlineItem, Modal, 
 import { useState } from 'react';
 import { axiosInstance, BASE_API_URL } from '../../constants';
 
-const UserProfile = ({ user_id, isOpen, toggle }) => {
-
+const UserProfile = ({ user }) => {
   const [profile, setProfile] = useState(null);
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggle = () => {
+    setIsOpen((prevIsOpen) => !prevIsOpen);
+  };
 
   const closeModal = () => {
     toggle();
   };
+
+  const userId = user.user_id;
   
-  const getUserProfile = (user_id) => {
+  const getUserProfile = (userId) => {
     axiosInstance
-      .get(BASE_API_URL + `user/${user_id}/profile/`)
+      .get(BASE_API_URL + `user/${userId}/profile/`)
       .then((res) => setProfile(res.data));
   };
 
@@ -20,7 +26,7 @@ const UserProfile = ({ user_id, isOpen, toggle }) => {
     const fullName = profile.user.first_name + ' ' + profile.user.last_name;
     return (
       <>
-      <Modal isOpen={isOpen} toggle={toggle}>
+      <Modal isOpen={isOpen} toggle={toggle} className="modal-lg">
       <ModalHeader>User Profile</ModalHeader>
       <ModalBody>
         <Card body>
@@ -44,7 +50,7 @@ const UserProfile = ({ user_id, isOpen, toggle }) => {
       </>
     );
   } else {
-    getUserProfile(user_id);
+    getUserProfile(userId);
     return null;
   }
 };
