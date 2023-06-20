@@ -12,8 +12,6 @@ const ChapterDetail = ({ isOpen, toggle, currentChapter, currentJournalId, setCu
     const setChapter = (chapter) => {
         setCurrentChapter(chapter);
     };
-
-    console.log(currentChapter);
     
     return (
         <>
