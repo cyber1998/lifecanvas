@@ -34,8 +34,6 @@ const HomePage = (props) => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
 
-  console.log(user);
-
   return (
     <>
       <div className="container">
@@ -61,7 +59,7 @@ const HomePage = (props) => {
       </div>
       <Router>
         <Routes>
-          <Route path="/profile" element={<Profile user={user}/>} />
+          <Route path="/profile" element={<Profile userId={user.user_id}/>} />
           <Route path="/" element={<Home user={user}/>} />
           <Route path="/journals" element={<JournalPage />} />
         </Routes>
