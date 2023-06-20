@@ -2,14 +2,28 @@ import { Form, FormGroup, Label, Input, Button, Modal, ModalHeader, ModalBody, M
 import { useState, useEffect } from 'react';
 import { axiosInstance, BASE_API_URL } from '../../constants';
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ userId }) => {
   const [profile, setProfile] = useState(null);
   const [isOpen, setIsOpen] = useState(true);
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
   const [interests, setInterests] = useState([]);
+
+  useEffect(() => {
+
+    // Get the user profile
+    axiosInstance
+      .get(BASE_API_URL + `user/${userId}/profile/`)
+      .then((res) => {
+        setProfile(res.data);
+      });
+      
+      // Get interests
+      axiosInstance
+      .get(BASE_API_URL + `interests/`)
+      .then((res) => {
+        setInterests(res.data);
+      });
+
+  }, [userId]);
 
 
   const toggle = () => {
@@ -20,42 +34,26 @@ const UserProfile = ({ user }) => {
     toggle();
   };
 
-  const userId = user.user_id;
-  
-  const getUserProfile = (userId) => {
-    axiosInstance
-      .get(BASE_API_URL + `user/${userId}/profile/`)
-      .then((res) => setProfile(res.data));
-  };
-
-  useEffect(() => {
-    getUserProfile(userId);
-    if (profile) {
-      setFirstName(profile.first_name);
-      setLastName(profile.last_name);
-      setEmail(profile.email);
-      setInterests(profile.interests);
-    }
-  }, []);
 
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      interests: interests,
+      first_name: event.target.firstName.value,
+      last_name: event.target.lastName.value,
+      email: event.target.email.value,
+      interests: [...event.target.interests.selectedOptions].map(opt => parseInt(opt.value))
     };
     axiosInstance
-      .put(BASE_API_URL + `user/${userId}/profile/`, data)
+      .put(BASE_API_URL + `user/${userId}/update-profile/`, data)
       .then((res) => {
         closeModal();
       })
       .catch((err) => console.log(err));
   };
+ 
 
-  console.log(firstName);
+  const selectedInterests = profile?.interests.map((interest) => interest.id);
 
   return (
     <div>
@@ -69,16 +67,14 @@ const UserProfile = ({ user }) => {
               type="text"
               id="firstName"
               placeholder="Enter your name"
-              defaultValue={firstName}
-              onChange={event => setFirstName(event.target.value)}
+              defaultValue={profile?.user.first_name}
             />
             <Label for="lastName">Last Name:</Label>
             <Input
               type="text"
               id="lastName"
               placeholder="Enter your last name"
-              defaultValue={lastName}
-              onChange={event => setLastName(event.target.value)}
+              defaultValue={profile?.user.last_name}
             />
           </FormGroup>
           <FormGroup>
@@ -87,8 +83,7 @@ const UserProfile = ({ user }) => {
               type="email"
               id="email"
               placeholder="Enter your email"
-              defaultValue={email}
-              onChange={event => setEmail(event.target.value)}
+              defaultValue={profile?.user.email}
             />
           </FormGroup>
           <FormGroup>
@@ -96,10 +91,16 @@ const UserProfile = ({ user }) => {
             <Input
               type="select"
               id="interests"
+              multiple
               placeholder="Enter your interests"
-              defaultValue={interests}
-              onChange={event => setInterests(event.target.value)}
-            />
+              default={selectedInterests}
+            >
+            {interests?.map((interest) => (
+              <option key={interest.id} value={interest.id}>
+                {interest.name}
+              </option>
+            ))}
+            </Input>
           </FormGroup>
           <Button type="submit">Submit</Button>
         </Form>
