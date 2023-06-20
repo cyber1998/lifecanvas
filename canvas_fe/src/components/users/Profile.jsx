@@ -1,10 +1,30 @@
-import { CardTitle, Card, Button, CardText, Badge, List, ListInlineItem, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { useState } from 'react';
+import { Form, FormGroup, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { useState, useEffect } from 'react';
 import { axiosInstance, BASE_API_URL } from '../../constants';
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ userId }) => {
   const [profile, setProfile] = useState(null);
   const [isOpen, setIsOpen] = useState(true);
+  const [interests, setInterests] = useState([]);
+
+  useEffect(() => {
+
+    // Get the user profile
+    axiosInstance
+      .get(BASE_API_URL + `user/${userId}/profile/`)
+      .then((res) => {
+        setProfile(res.data);
+      });
+      
+      // Get interests
+      axiosInstance
+      .get(BASE_API_URL + `interests/`)
+      .then((res) => {
+        setInterests(res.data);
+      });
+
+  }, [userId]);
+
 
   const toggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -14,45 +34,85 @@ const UserProfile = ({ user }) => {
     toggle();
   };
 
-  const userId = user.user_id;
-  
-  const getUserProfile = (userId) => {
-    axiosInstance
-      .get(BASE_API_URL + `user/${userId}/profile/`)
-      .then((res) => setProfile(res.data));
-  };
 
-  if (profile !== null) {
-    const fullName = profile.user.first_name + ' ' + profile.user.last_name;
-    return (
-      <>
-      <Modal isOpen={isOpen} toggle={toggle} className="modal-lg">
-      <ModalHeader>User Profile</ModalHeader>
-      <ModalBody>
-        <Card body>
-          <CardTitle>{fullName}</CardTitle>
-          <CardText>Username: {profile.user.username}</CardText>
-          <List type="inline">
-            {profile.interests.map((interest) => (
-              <ListInlineItem key={interest.id}>
-                <Badge color="dark" pill className="p-2">
-                  {interest.name}
-                </Badge>
-              </ListInlineItem>
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = {
+      first_name: event.target.firstName.value,
+      last_name: event.target.lastName.value,
+      email: event.target.email.value,
+      interests: [...event.target.interests.selectedOptions].map(opt => parseInt(opt.value))
+    };
+    axiosInstance
+      .put(BASE_API_URL + `user/${userId}/update-profile/`, data)
+      .then((res) => {
+        closeModal();
+      })
+      .catch((err) => console.log(err));
+  };
+ 
+
+  const selectedInterests = profile?.interests.map((interest) => interest.id);
+
+  return (
+    <div>
+      <Modal isOpen={isOpen} toggle={toggle}>
+        <ModalHeader toggle={toggle}>User Profile</ModalHeader>
+        <ModalBody>
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label for="firstName">First Name:</Label>
+            <Input
+              type="text"
+              id="firstName"
+              placeholder="Enter your name"
+              defaultValue={profile?.user.first_name}
+            />
+            <Label for="lastName">Last Name:</Label>
+            <Input
+              type="text"
+              id="lastName"
+              placeholder="Enter your last name"
+              defaultValue={profile?.user.last_name}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="email">Email:</Label>
+            <Input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              defaultValue={profile?.user.email}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="interests">Interests:</Label>
+            <Input
+              type="select"
+              id="interests"
+              multiple
+              placeholder="Enter your interests"
+              default={selectedInterests}
+            >
+            {interests?.map((interest) => (
+              <option key={interest.id} value={interest.id}>
+                {interest.name}
+              </option>
             ))}
-          </List>
-          <Button color="dark" outline onClick={closeModal}>
+            </Input>
+          </FormGroup>
+          <Button type="submit">Submit</Button>
+        </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={closeModal}>
             Close
           </Button>
-        </Card>
-      </ModalBody>
+        </ModalFooter>
       </Modal>
-      </>
-    );
-  } else {
-    getUserProfile(userId);
-    return null;
-  }
+    </div>
+  );
 };
 
 export default UserProfile;

@@ -2,9 +2,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from userprofile.models import UserProfile
+from userprofile.models import Interest, UserProfile
 from django.contrib.auth.models import User
-from userprofile.serializers import UpdateUserSerializer, UserProfileSerializer, UserSerializer
+from userprofile.serializers import InterestSerializer, UpdateUserSerializer, UserProfileSerializer, UserSerializer
 
 # Create your views here.
 
@@ -50,3 +50,13 @@ def update_user_profile(request, user_id=None):
         return Response(UserProfileSerializer(user_profile).data)
     except UserProfile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def get_interests(request):
+    """
+    Get all interests
+    """
+    interests = Interest.objects.all()
+    serializer = InterestSerializer(interests, many=True)
+    return Response(serializer.data)
+
