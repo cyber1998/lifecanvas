@@ -94,7 +94,7 @@ const UserProfile = ({ user }) => {
           <FormGroup>
             <Label for="interests">Interests:</Label>
             <Input
-              type="text"
+              type="select"
               id="interests"
               placeholder="Enter your interests"
               defaultValue={interests}
