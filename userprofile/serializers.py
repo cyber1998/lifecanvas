@@ -44,7 +44,7 @@ class UpdateUserSerializer(serializers.Serializer):
             user.email = user_data.get('email', user.email)
             user.username = user_data.get('username', user.username)
             user.save()
-        interests_data = Interest.objects.filter(id__in=validated_data.pop('interests', None))
+        interests_data = Interest.objects.filter(id__in=validated_data.pop('interests', []))
         if interests_data:
             instance.interests.clear()
             instance.interests.add(*interests_data)
