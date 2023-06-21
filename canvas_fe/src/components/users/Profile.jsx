@@ -25,7 +25,6 @@ const UserProfile = ({ userId }) => {
 
   }, [userId]);
 
-
   const toggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
@@ -33,8 +32,6 @@ const UserProfile = ({ userId }) => {
   const closeModal = () => {
     toggle();
   };
-
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,7 +49,6 @@ const UserProfile = ({ userId }) => {
       .catch((err) => console.log(err));
   };
  
-
   const selectedInterests = profile?.interests.map((interest) => interest.id);
 
   return (
@@ -88,18 +84,12 @@ const UserProfile = ({ userId }) => {
           </FormGroup>
           <FormGroup>
             <Label for="interests">Interests:</Label>
-            <Input
-              type="select"
-              id="interests"
-              multiple
-              placeholder="Enter your interests"
-              default={selectedInterests}
-            >
-            {interests?.map((interest) => (
-              <option key={interest.id} value={interest.id}>
-                {interest.name}
-              </option>
-            ))}
+            <Input type="select" name="interests" id="interests" multiple>
+              {interests.map((interest) => (
+                <option key={interest.id} value={interest.id} selected={selectedInterests?.includes(interest.id)}>
+                  {interest.name}
+                </option>
+              ))}
             </Input>
           </FormGroup>
           <Button type="submit">Submit</Button>
