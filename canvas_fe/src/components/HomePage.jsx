@@ -68,7 +68,6 @@ const HomePage = (props) => {
       </div>
       <Router>
         <Routes>
-          {/* <Route path="/profile" element={<Profile userId={user.user_id}/>} /> */}
           <Route path="/" element={<Home user={user}/>} />
           <Route path="/journals" element={<JournalPage />} />
         </Routes>

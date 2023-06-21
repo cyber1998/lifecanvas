@@ -58,7 +58,7 @@ const UserProfile = ({ userId }) => {
   return (
     <div>
       <Modal isOpen={isOpen} toggle={toggle}>
-        <ModalHeader toggle={toggle}>User Profile</ModalHeader>
+        <ModalHeader toggle={toggle}>My Profile</ModalHeader>
         <ModalBody>
         <Form onSubmit={handleSubmit}>
           <FormGroup>
