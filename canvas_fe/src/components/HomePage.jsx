@@ -9,6 +9,15 @@ import JournalPage from './journals/JournalPage';
 
 const HomePage = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const toggleProfile = () => {
+    setIsProfileOpen((prevIsProfileOpen) => !prevIsProfileOpen);
+  };
+
+  const openProfileModal = () => {
+    setIsProfileOpen(true);
+  };
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -43,7 +52,7 @@ const HomePage = (props) => {
           <Collapse isOpen={isOpen} navbar>
             <Nav className="me-auto" navbar>
               <NavItem>
-                <NavLink href="/profile">Profile</NavLink>
+                <NavLink href="#" onClick={() => openProfileModal()}>Profile</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/journals">My Journals</NavLink>
@@ -59,11 +68,15 @@ const HomePage = (props) => {
       </div>
       <Router>
         <Routes>
-          <Route path="/profile" element={<Profile userId={user.user_id}/>} />
+          {/* <Route path="/profile" element={<Profile userId={user.user_id}/>} /> */}
           <Route path="/" element={<Home user={user}/>} />
           <Route path="/journals" element={<JournalPage />} />
         </Routes>
       </Router>
+      {isProfileOpen && 
+      <Profile userId={user.user_id}
+      toggle={toggleProfile}
+      isOpen={isProfileOpen} />}
     </>
   );
 };
