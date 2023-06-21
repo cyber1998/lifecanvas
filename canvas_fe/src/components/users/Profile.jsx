@@ -1,102 +1,135 @@
-import { Form, FormGroup, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { useState, useEffect } from 'react';
-import { axiosInstance, BASE_API_URL } from '../../constants';
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
+import { useState, useEffect } from "react";
+import { axiosInstance, BASE_API_URL } from "../../constants";
 
-const UserProfile = ({ userId }) => {
+const UserProfile = ({ userId, isOpen, closeProfile }) => {
   const [profile, setProfile] = useState(null);
-  const [isOpen, setIsOpen] = useState(true);
   const [interests, setInterests] = useState([]);
 
   useEffect(() => {
-
     // Get the user profile
-    axiosInstance
-      .get(BASE_API_URL + `user/${userId}/profile/`)
-      .then((res) => {
-        setProfile(res.data);
+    axiosInstance.get(BASE_API_URL + `user/${userId}/profile/`).then((res) => {
+      setProfile({
+        interests: res.data.interests.map((interest) => interest.id),
+        ...res.data.user,
       });
-      
-      // Get interests
-      axiosInstance
-      .get(BASE_API_URL + `interests/`)
-      .then((res) => {
-        setInterests(res.data);
-      });
+    });
 
+    // Get interests
+    axiosInstance.get(BASE_API_URL + `interests/`).then((res) => {
+      setInterests(res.data);
+    });
   }, [userId]);
-
-  const toggle = () => {
-    setIsOpen((prevIsOpen) => !prevIsOpen);
-  };
-
-  const closeModal = () => {
-    toggle();
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      first_name: event.target.firstName.value,
-      last_name: event.target.lastName.value,
+      first_name: event.target.first_name.value,
+      last_name: event.target.last_name.value,
       email: event.target.email.value,
-      interests: [...event.target.interests.selectedOptions].map(opt => parseInt(opt.value))
+      interests: [...event.target.interests.selectedOptions].map((opt) =>
+        parseInt(opt.value)
+      ),
     };
     axiosInstance
       .put(BASE_API_URL + `user/${userId}/update-profile/`, data)
       .then((res) => {
-        closeModal();
+        closeProfile();
       })
       .catch((err) => console.log(err));
   };
- 
-  const selectedInterests = profile?.interests.map((interest) => interest.id);
 
+  const handleProfileChange = (id, value) => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [id]: value,
+    }));
+  };
+  console.log(profile?.interests);
   return (
     <div>
-      <Modal isOpen={isOpen} toggle={toggle}>
-        <ModalHeader toggle={toggle}>My Profile</ModalHeader>
+      <Modal isOpen={isOpen} toggle={closeProfile}>
+        <ModalHeader>My Profile</ModalHeader>
         <ModalBody>
-        <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label for="firstName">First Name:</Label>
-            <Input
-              type="text"
-              id="firstName"
-              placeholder="Enter your name"
-              defaultValue={profile?.user.first_name}
-            />
-            <Label for="lastName">Last Name:</Label>
-            <Input
-              type="text"
-              id="lastName"
-              placeholder="Enter your last name"
-              defaultValue={profile?.user.last_name}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="email">Email:</Label>
-            <Input
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-              defaultValue={profile?.user.email}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="interests">Interests:</Label>
-            <Input type="select" name="interests" id="interests" multiple>
-              {interests.map((interest) => (
-                <option key={interest.id} value={interest.id} selected={selectedInterests?.includes(interest.id)}>
-                  {interest.name}
-                </option>
-              ))}
-            </Input>
-          </FormGroup>
-          <Button type="submit">Submit</Button>
-        </Form>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Label for="first_name">First Name:</Label>
+              <Input
+                type="text"
+                id="first_name"
+                placeholder="Enter your name"
+                value={profile?.first_name}
+                onChange={(e) =>
+                  handleProfileChange(e.target.id, e.target.value)
+                }
+              />
+              <Label for="last_name">Last Name:</Label>
+              <Input
+                type="text"
+                id="last_name"
+                placeholder="Enter your last name"
+                value={profile?.last_name}
+                onChange={(e) =>
+                  handleProfileChange(e.target.id, e.target.value)
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="email">Email:</Label>
+              <Input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                value={profile?.email}
+                onChange={(e) =>
+                  handleProfileChange(e.target.id, e.target.value)
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="interests">Interests:</Label>
+              <Input
+                type="select"
+                name="interests"
+                id="interests"
+                multiple
+                onChange={(e) => {
+                  let value = e.target.value;
+                  let exists = profile?.interests.includes(value);
+                  let finalList = exists
+                    ? profile?.interests.filter(
+                        (interest) => interest !== value
+                      )
+                    : [...profile?.interests, parseInt(value)];
+                  handleProfileChange(e.target.id, finalList);
+                }}
+              >
+                {interests.map((interest) => (
+                  <option
+                    key={interest.id}
+                    value={interest.id}
+                    selected={profile?.interests?.includes(interest.id)}
+                  >
+                    {interest.name}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
+            <Button type="submit">Submit</Button>
+          </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={closeModal}>
+          <Button color="secondary" onClick={closeProfile}>
             Close
           </Button>
         </ModalFooter>

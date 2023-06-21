@@ -11,10 +11,6 @@ const HomePage = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const toggleProfile = () => {
-    setIsProfileOpen((prevIsProfileOpen) => !prevIsProfileOpen);
-  };
-
   const openProfileModal = () => {
     setIsProfileOpen(true);
   };
@@ -68,14 +64,15 @@ const HomePage = (props) => {
       </div>
       <Router>
         <Routes>
-          <Route path="/" element={<Home user={user}/>} />
+          <Route path="/" element={<Home user={user} />} />
           <Route path="/journals" element={<JournalPage />} />
         </Routes>
       </Router>
-      {isProfileOpen && 
-      <Profile userId={user.user_id}
-      toggle={toggleProfile}
-      isOpen={isProfileOpen} />}
+      {isProfileOpen &&
+        <Profile 
+        userId={user.user_id}
+        closeProfile={() => setIsProfileOpen(false)}
+        isOpen={isProfileOpen} />}
     </>
   );
 };
