@@ -13,14 +13,12 @@ import ChapterList from "../chapters/ChapterList";
 
 const JournalList = ({ journals }) => {
   const [chapters, setChapters] = useState([]);
-  const [journal, setJournal] = useState("");
 
   useEffect(() => {
     setChapters([]);
   }, []);
 
   const getChapters = (journalObj) => {
-    setJournal(journalObj);
     axiosInstance
       .get(BASE_API_URL + `journal/${journalObj.id}/chapter/`)
       .then((res) => setChapters(res.data.results));
