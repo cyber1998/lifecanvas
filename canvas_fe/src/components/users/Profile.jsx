@@ -55,7 +55,7 @@ const UserProfile = ({ userId, isOpen, closeProfile }) => {
       [id]: value,
     }));
   };
-  console.log(profile?.interests);
+
   return (
     <div>
       <Modal isOpen={isOpen} toggle={closeProfile}>
