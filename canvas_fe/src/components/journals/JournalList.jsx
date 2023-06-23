@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Col, Row } from 'reactstrap';
+import React, { useEffect, useState } from "react";
+import {
+  AccordionBody,
+  AccordionHeader,
+  Card,
+  Col,
+  Row,
+  UncontrolledAccordion,
+} from "reactstrap";
 
-import { axiosInstance, BASE_API_URL } from '../../constants';
-import ChapterList from '../chapters/ChapterList';
+import { axiosInstance, BASE_API_URL } from "../../constants";
+import ChapterList from "../chapters/ChapterList";
 
 const JournalList = ({ journals }) => {
   const [chapters, setChapters] = useState([]);
-  const [journal, setJournal] = useState('');
+  const [journal, setJournal] = useState("");
 
   useEffect(() => {
     setChapters([]);
@@ -28,25 +35,33 @@ const JournalList = ({ journals }) => {
       </div>
       <Row>
         {journals.map((journal) => (
-          <Col xs="12" sm="6" md="6" lg="6" xl="6" key={journal.id}>
-            <Card className="mb-3" onClick={() => getChapters(journal)}>
-              <div className="card-body">
+          <Col xs="6" sm="6" md="6" lg="12" xl="12" key={journal.id}>
+            <UncontrolledAccordion stayOpen="false">
+              <AccordionHeader
+                onClick={() => getChapters(journal)}
+                targetId={journal.id}
+              >
                 <h5 className="card-title">{journal.title}</h5>
-              </div>
-            </Card>
+              </AccordionHeader>
+              <AccordionBody accordionId={journal.id}>
+                <div className="d-flex flex-column min-h-100 justify-content-center align-items-center mb-3">
+                  <span className="align-middle">
+                    <h4>Chapters</h4>
+                  </span>
+                </div>
+                <Row>
+                  {chapters.length > 0 && (
+                    <ChapterList
+                      chapters={chapters}
+                      currentJournalId={journal.id}
+                    />
+                  )}
+                </Row>
+              </AccordionBody>
+            </UncontrolledAccordion>
           </Col>
         ))}
       </Row>
-      <hr/>
-      <div className="d-flex flex-column min-h-100 justify-content-center align-items-center mb-3">
-        <span className="align-middle">
-          <h4>Chapters for: {journal.title}</h4>
-        </span>
-      </div>
-      <Row>
-        {chapters.length > 0 && <ChapterList chapters={chapters} currentJournalId={journal.id} />}
-      </Row>
-
     </>
   );
 };
