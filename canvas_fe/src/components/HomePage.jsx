@@ -60,9 +60,9 @@ const HomePage = (props) => {
   return (
     <>
       <div className="container">
-        <Navbar {...props} container="fluid" expand="true">
+        <Navbar {...props} container="fluid" expand="xl">
           <NavbarBrand href="/">Lifecanvas</NavbarBrand>
-          <NavbarToggler onClick={toggle} className="me-2" />
+          <NavbarToggler onClick={toggle} className="me-3" />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="me-auto" navbar>
               <NavItem>
