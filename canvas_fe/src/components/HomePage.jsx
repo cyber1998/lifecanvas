@@ -77,7 +77,7 @@ const HomePage = (props) => {
                 <DropdownMenu>
                   <DropdownItem href="/journals">My Journals</DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>Journal Management</DropdownItem>
+                  <DropdownItem>Manage</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
               <NavItem>
