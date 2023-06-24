@@ -15,7 +15,8 @@ import {
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Profile from "./users/Profile";
 import Home from "./Home";
-import JournalPage from "./journals/JournalPage";
+import JournalList from "./journals/JournalList";
+import ManageJournal from "./journals/JournalCreateEdit";
 
 const HomePage = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,7 +78,7 @@ const HomePage = (props) => {
                 <DropdownMenu>
                   <DropdownItem href="/journals">My Journals</DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>Manage</DropdownItem>
+                  <DropdownItem href="/manage-journals">Manage</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
               <NavItem>
@@ -92,7 +93,8 @@ const HomePage = (props) => {
       <Router>
         <Routes>
           <Route path="/" element={<Home user={user} />} />
-          <Route path="/journals" element={<JournalPage />} />
+          <Route path="/journals" element={<JournalList />} />
+          <Route path="/manage-journals" element={<ManageJournal />} />
         </Routes>
       </Router>
       {isProfileOpen && (
