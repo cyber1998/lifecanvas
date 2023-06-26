@@ -18,13 +18,11 @@ const ManageJournal = () => {
     setIsEditing((prevIsEditing) => !prevIsEditing);
     const childrenNodes = [...e.target.children];
     const data = childrenNodes.reduce((acc, child) => {
-      console.log(child);
       acc[child.id] = child.innerText
         ? child.innerText
         : journal[child.id];
       return acc;
     }, {});
-    console.log(data);
     axiosInstance.put(BASE_API_URL + `journal/${journal.id}/`, { ...data });
   };
 
