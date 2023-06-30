@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { CardBody, CardHeader, Col, Row, Card, Container } from "reactstrap";
+import {
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Card,
+  Container,
+  Input,
+  Label,
+  Form,
+  Button,
+} from "reactstrap";
 import { axiosInstance, BASE_API_URL } from "../../constants";
 
 const ManageJournal = () => {
@@ -18,12 +29,20 @@ const ManageJournal = () => {
     setIsEditing((prevIsEditing) => !prevIsEditing);
     const childrenNodes = [...e.target.children];
     const data = childrenNodes.reduce((acc, child) => {
-      acc[child.id] = child.innerText
-        ? child.innerText
-        : journal[child.id];
+      acc[child.id] = child.innerText ? child.innerText : journal[child.id];
       return acc;
     }, {});
     axiosInstance.put(BASE_API_URL + `journal/${journal.id}/`, { ...data });
+  };
+
+  const openAddJournalModal = (e) => {
+    const title = e.target.title.value;
+    const description = e.target.description.value;
+    axiosInstance
+      .post(BASE_API_URL + "journal/", { title, description })
+      .then((res) => {
+        getJournals();
+      });
   };
 
   const getJournals = () => {
@@ -36,9 +55,47 @@ const ManageJournal = () => {
       <Container style={{ marginTop: "20px" }}>
         <Row>
           <Col>
+          <Row>
+              <Form onSubmit={(e) => openAddJournalModal(e)}>
+                <Card>
+                  <CardHeader className="card-title" id="title">
+                    <h4>Add New Journal</h4>
+                  </CardHeader>
+                  <CardBody
+                    id="description"
+                    className="d-flex flex-column min-h-100 mb-3"
+                  >
+                    <div className="mb-3">
+                      <Label for="title"> <h5>Journal Title</h5></Label>
+                      <Input
+                      type="text"
+                      id="title"
+                      placeholder="New Journal Title"
+                    ></Input>
+                    </div>
+                    <div className="mb-3">
+                      <Label for="description"> <h5>Journal Description</h5></Label>
+                      <Input
+                      type="textarea"
+                      id="description"
+                      placeholder="New Journal Description"
+                    ></Input>
+                    </div>
+                    <div>
+                    <Button
+                      type="submit"
+                      className="d-flex flex-column min-v-100"
+                    >
+                      Add Journal
+                    </Button>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Form>
+            </Row>
             <div className="d-flex flex-column min-h-100 justify-content-center align-items-center mb-3">
               <span className="align-middle">
-                <h4>Manage</h4>
+                <h4>Edit journals</h4>
               </span>
             </div>
             <Row>
