@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { CardBody, CardHeader, Col, Row, Card, Container } from "reactstrap";
+import {
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Card,
+  Container,
+  Input,
+  Label,
+  Form,
+  Button,
+} from "reactstrap";
 import { axiosInstance, BASE_API_URL } from "../../constants";
 
 const ManageJournal = () => {
   const [journals, setJournals] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [isAdding, setIsAdding] = useState(true);
 
   useEffect(() => {
     getJournals();
@@ -15,30 +25,25 @@ const ManageJournal = () => {
     setIsEditing(true);
   };
 
-  const handleAddOnClick = () => {
-    setIsAdding(true);
-  };
-
   const handleEditedData = (e, journal) => {
     setIsEditing((prevIsEditing) => !prevIsEditing);
     const childrenNodes = [...e.target.children];
     const data = childrenNodes.reduce((acc, child) => {
-      acc[child.id] = child.innerText
-        ? child.innerText
-        : journal[child.id];
+      acc[child.id] = child.innerText ? child.innerText : journal[child.id];
       return acc;
     }, {});
     axiosInstance.put(BASE_API_URL + `journal/${journal.id}/`, { ...data });
   };
-  
-  const openAddJournalModal = ({title, description}) => {
-    axiosInstance.post(BASE_API_URL + "journal/", {title, description})
-    .then((res) => {
-      getJournals();
-    });
-    setIsAdding((prevIsAdding) => !prevIsAdding);
-  };
 
+  const openAddJournalModal = (e) => {
+    const title = e.target.title.value;
+    const description = e.target.description.value;
+    axiosInstance
+      .post(BASE_API_URL + "journal/", { title, description })
+      .then((res) => {
+        getJournals();
+      });
+  };
 
   const getJournals = () => {
     axiosInstance
@@ -103,21 +108,42 @@ const ManageJournal = () => {
               ))}
             </Row>
             <Row>
-              {isAdding ? (
-                <Card
-                >
+              <Form onSubmit={(e) => openAddJournalModal(e)}>
+                <Card>
                   <CardHeader className="card-title" id="title">
-                  Add New Journal
+                    <h4>Add New Journal</h4>
                   </CardHeader>
                   <CardBody
                     id="description"
-                    className="d-flex flex-column min-h-100 justify-content-center align-items-center mb-3"
+                    className="d-flex flex-column min-h-100 mb-3"
                   >
-                    <input type="text" id="title" placeholder="Title" />
-                    <input type="text" id="description" placeholder="Description" />
+                    <div className="mb-3">
+                      <Label for="title"> <h5>Journal Title</h5></Label>
+                      <Input
+                      type="text"
+                      id="title"
+                      placeholder="New Journal Title"
+                    ></Input>
+                    </div>
+                    <div className="mb-3">
+                      <Label for="description"> <h5>Journal Description</h5></Label>
+                      <Input
+                      type="textarea"
+                      id="description"
+                      placeholder="New Journal Description"
+                    ></Input>
+                    </div>
+                    <div>
+                    <Button
+                      type="submit"
+                      className="d-flex flex-column min-v-100"
+                    >
+                      Add Journal
+                    </Button>
+                    </div>
                   </CardBody>
                 </Card>
-              ) : null}
+              </Form>
             </Row>
           </Col>
         </Row>
