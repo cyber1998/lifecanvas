@@ -5,6 +5,7 @@ import { axiosInstance, BASE_API_URL } from "../../constants";
 const ManageJournal = () => {
   const [journals, setJournals] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(true);
 
   useEffect(() => {
     getJournals();
@@ -12,6 +13,10 @@ const ManageJournal = () => {
 
   const handleEditOnClick = () => {
     setIsEditing(true);
+  };
+
+  const handleAddOnClick = () => {
+    setIsAdding(true);
   };
 
   const handleEditedData = (e, journal) => {
@@ -25,6 +30,15 @@ const ManageJournal = () => {
     }, {});
     axiosInstance.put(BASE_API_URL + `journal/${journal.id}/`, { ...data });
   };
+  
+  const openAddJournalModal = ({title, description}) => {
+    axiosInstance.post(BASE_API_URL + "journal/", {title, description})
+    .then((res) => {
+      getJournals();
+    });
+    setIsAdding((prevIsAdding) => !prevIsAdding);
+  };
+
 
   const getJournals = () => {
     axiosInstance
@@ -87,6 +101,23 @@ const ManageJournal = () => {
                   )}
                 </Col>
               ))}
+            </Row>
+            <Row>
+              {isAdding ? (
+                <Card
+                >
+                  <CardHeader className="card-title" id="title">
+                  Add New Journal
+                  </CardHeader>
+                  <CardBody
+                    id="description"
+                    className="d-flex flex-column min-h-100 justify-content-center align-items-center mb-3"
+                  >
+                    <input type="text" id="title" placeholder="Title" />
+                    <input type="text" id="description" placeholder="Description" />
+                  </CardBody>
+                </Card>
+              ) : null}
             </Row>
           </Col>
         </Row>
